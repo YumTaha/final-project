@@ -41,7 +41,8 @@ public:
     }
 
 // TODO AddItem – adds an item from the list
-    void AddItem(Node<T>* newNode) {
+    void AddItem(T data) {
+        auto* newNode = new Node<T>(data);
         if (head == nullptr) {
             head = newNode;
             tail = newNode;
@@ -94,19 +95,43 @@ public:
   * If the list is empty, this will throw an error or display an error message.
   * 2 calls to SeeNext will return the 2 items next to each other in the list unless SeeAt or Reset is called
   * in between the 2 calls (or the first call returns the last item in the list).*/
-
     Node<T>* SeeNext() {
         if (head == nullptr) {
-            cout << "ERROR: List is empty!" << endl;
-            return nullptr;
-        }else if (CurrentNode == nullptr) CurrentNode = head;
-        else CurrentNode = CurrentNode->next;
+            throw runtime_error("ERROR: List is empty!");
+        }else if (CurrentNode == nullptr) {
+            CurrentNode = head;
+        }else { CurrentNode = CurrentNode->next; }
 
         if (CurrentNode == nullptr) {
-            cout << "ERROR: End of the list reached!" << endl;
+            cout << " End of the list reached!" << endl;
             return nullptr;
         }
         return CurrentNode;
+    }
+
+ /*TODO SeeAt – Finds an item at a location in the list (int passed in from user).
+ * returns the item without removing it. If the location passed by the user is
+ * past the end of the list, this will throw an error or display an error
+ * message. This will set the location used by SeeNext to point at the item
+ * after the item returned*/
+    Node<T>* SeeAt(int index){
+        Node<T>* current = head;
+        int count = 0;
+
+        if (index < 0){
+            throw runtime_error("ERROR: Index must be non-negative!");
+        }
+
+        while (current != nullptr) {
+            if (count == index){
+                CurrentNode = current;
+                return current;
+            }
+            current = current->next;
+            count++;
+        }
+
+        throw runtime_error("ERROR: Index out of range!");
     }
 
 // TODO Reset – resets the location that the SeeNext function uses to point at the first item in the list.
