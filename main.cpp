@@ -5,26 +5,40 @@
 using namespace std;
 
 int main() {
-    LinkedList<int> list1;
-    LinkedList<int> list2;
+    // Create an ordered linked list
+    LinkedList<int> list;
 
-    auto* nodeA = new Node(15);
-    auto* nodeB = new Node(20);
-    auto* nodeC = new Node(30);
-    auto* nodeD = new Node(9);
+    list.SeeNext();
 
-    list1.AddItem(nodeA);
-    list1.AddItem(nodeB);
-    list2.AddItem(nodeC);
-    list2.AddItem(nodeD);
+    // Add items to the list
+    list.AddItem(new Node(20));
+    list.AddItem(new Node(10));
+    list.AddItem(new Node(30));
 
-    //auto* NodeGet = list1.GetItem(1);
-    //list2.AddItem(NodeGet);
-    cout << list1.IsInList(15) << " " << list2.IsInList(3);
+    // Print the contents of the list
+    cout << "List contents: ";
+    list.Print();
 
-
+    // Use SeeNext to iterate through the list
+    cout << "Using SeeNext: ";
+    Node<int>* node;
+    while ((node = list.SeeNext()) != nullptr) {
+        cout << node->Data << " ";
+    }
     cout << endl;
-    list1.Print();
-    list2.Print();
+
+    // Reset and iterate again
+    list.Reset();
+    cout << "Using SeeNext after Reset: ";
+    while ((node = list.SeeNext()) != nullptr) {
+        cout << node->Data << " ";
+    }
+    cout << endl;
+
+    cout << list.IsEmpty() << list.IsInList(30);
+    Node<int>* pNode = list.GetItem(30);
+    list.AddItem(pNode);
+
     return 0;
 }
+

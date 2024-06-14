@@ -15,6 +15,7 @@ class LinkedList{
 private:
     Node<T>* head;
     Node<T>* tail;
+    Node<T>* CurrentNode;
 
     [[nodiscard]] int getLength() const {
         int length = 0;
@@ -28,7 +29,7 @@ private:
 
 public:
 // TODO Constructor
-    LinkedList(): head(nullptr), tail (nullptr){}
+    LinkedList(): head(nullptr), tail(nullptr), CurrentNode(nullptr){}
 
 // TODO Destructor
     virtual ~LinkedList(){
@@ -86,14 +87,30 @@ public:
 
 // TODO IsEmpty – returns a bool indicating if the list is empty.
     bool IsEmpty() { return (head == nullptr); }
+
  /*TODO SeeNext – returns the item without removing it from the list at a given location in the list.
   * The class will maintain the next location and will start at the first item in the list.
   * When it gets to the last item in the list, it will return a null pointer after it gets past the last item.
   * If the list is empty, this will throw an error or display an error message.
   * 2 calls to SeeNext will return the 2 items next to each other in the list unless SeeAt or Reset is called
   * in between the 2 calls (or the first call returns the last item in the list).*/
-// TODO Reset – resets the location that the SeeNext function uses to point at the first item in the list.
 
+    Node<T>* SeeNext() {
+        if (head == nullptr) {
+            cout << "ERROR: List is empty!" << endl;
+            return nullptr;
+        }else if (CurrentNode == nullptr) CurrentNode = head;
+        else CurrentNode = CurrentNode->next;
+
+        if (CurrentNode == nullptr) {
+            cout << "ERROR: End of the list reached!" << endl;
+            return nullptr;
+        }
+        return CurrentNode;
+    }
+
+// TODO Reset – resets the location that the SeeNext function uses to point at the first item in the list.
+    void Reset() { CurrentNode = nullptr; }
 
 
 /*// TODO operators < > ==
