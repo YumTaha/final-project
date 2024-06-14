@@ -7,19 +7,20 @@
 
 #include "Node.h"
 #include <iostream>
+#include <memory>
 
 using namespace std;
 
 template <typename T>
 class LinkedList{
 private:
-    Node<T>* head;
-    Node<T>* tail;
-    Node<T>* CurrentNode;
+    shared_ptr<Node<T>> head;
+    shared_ptr<Node<T>> tail;
+    shared_ptr<Node<T>> currentNode;
 
     [[nodiscard]] int getLength() const {
         int length = 0;
-        Node<T>* current = head;
+        auto current = head;
         while (current) {
             length++;
             current = current->next;
@@ -28,21 +29,15 @@ private:
     }
 
 public:
-// TODO Constructor
-    LinkedList(): head(nullptr), tail(nullptr), CurrentNode(nullptr){}
+// Constructor
+    LinkedList(): head(nullptr), tail(nullptr), currentNode(nullptr){}
 
-// TODO Destructor
-    virtual ~LinkedList(){
-        while (head){
-            Node<T>* toBeDel = head;
-            head = head->next;
-            delete toBeDel;
-        }
-    }
+// Destructor
+    ~LinkedList() = default;
 
-// TODO AddItem – adds an item from the list
+// AddItem – adds an item from the list
     void AddItem(T data) {
-        auto* newNode = new Node<T>(data);
+        auto newNode = make_shared<Node<T>>(data);
         if (head == nullptr) {
             head = newNode;
             tail = newNode;
@@ -53,18 +48,20 @@ public:
         }
     }
 
-// TODO GetItem – searches the list for the given item. If found, it removes it from the list and returns it. If not found, it returns a null pointer.
-    Node<T>* GetItem(T item){
-        Node<T>* current = head;
-        Node<T>* previous = nullptr;
+// GetItem – searches the list for the given item. If found, it removes it from the list and returns it. If not found, it returns a null pointer.
+    shared_ptr<Node<T>> GetItem(T item){
+        auto current = head;
+        shared_ptr<Node<T>> previous = nullptr;
 
         while (current){
             if (current->Data == item){
                 if (previous == nullptr) {
                     head = current->next;
-                }
-                else {
+                }else {
                     previous->next = current->next;
+                }
+                if (current == tail){
+                    tail = previous;
                 }
                 // Isolate the node
                 current->next = nullptr;
@@ -76,9 +73,9 @@ public:
         return nullptr;
     }
 
-// TODO IsInlist – returns a bool indicating if the given item is in the list.
+// IsInlist – returns a bool indicating if the given item is in the list.
     bool IsInList(T item){
-        Node<T>* current = head;
+        auto current = head;
         while (current){
             if (current->Data == item) return true;
             current = current->next;
@@ -86,57 +83,53 @@ public:
         return false;
     }
 
-// TODO IsEmpty – returns a bool indicating if the list is empty.
+// IsEmpty – returns a bool indicating if the list is empty.
     bool IsEmpty() { return (head == nullptr); }
 
- /*TODO SeeNext – returns the item without removing it from the list at a given location in the list.
+ /* SeeNext – returns the item without removing it from the list at a given location in the list.
   * The class will maintain the next location and will start at the first item in the list.
   * When it gets to the last item in the list, it will return a null pointer after it gets past the last item.
   * If the list is empty, this will throw an error or display an error message.
   * 2 calls to SeeNext will return the 2 items next to each other in the list unless SeeAt or Reset is called
   * in between the 2 calls (or the first call returns the last item in the list).*/
-    Node<T>* SeeNext() {
+    shared_ptr<Node<T>> SeeNext() {
         if (head == nullptr) {
             throw runtime_error("ERROR: List is empty!");
-        }else if (CurrentNode == nullptr) {
-            CurrentNode = head;
-        }else { CurrentNode = CurrentNode->next; }
+        }else if (currentNode == nullptr) {
+            currentNode = head;
+        }else { currentNode = currentNode->next; }
 
-        if (CurrentNode == nullptr) {
+        if (currentNode == nullptr) {
             cout << " End of the list reached!" << endl;
             return nullptr;
         }
-        return CurrentNode;
+        return currentNode;
     }
 
- /*TODO SeeAt – Finds an item at a location in the list (int passed in from user).
- * returns the item without removing it. If the location passed by the user is
- * past the end of the list, this will throw an error or display an error
- * message. This will set the location used by SeeNext to point at the item
- * after the item returned*/
-    Node<T>* SeeAt(int index){
-        Node<T>* current = head;
-        int count = 0;
+ /* SeeAt – Finds an item at a location in the list (int passed in from user).
+  * returns the item without removing it. If the location passed by the user is
+  * past the end of the list, this will throw an error or display an error
+  * message. This will set the location used by SeeNext to point at the item
+  * after the item returned*/
+     shared_ptr<Node<T>> SeeAt(int index) {
+         if (index < 0) {
+             throw out_of_range("Index is negative!");
+         }
+         int count = 0;
+         auto current = head;
+         while (current && count < index) {
+             current = current->next;
+             count++;
+         }
+         if (!current) {
+             throw out_of_range("Index is out of range!");
+         }
+         currentNode = current->next;
+         return current;
+     }
 
-        if (index < 0){
-            throw runtime_error("ERROR: Index must be non-negative!");
-        }
-
-        while (current != nullptr) {
-            if (count == index){
-                CurrentNode = current;
-                return current;
-            }
-            current = current->next;
-            count++;
-        }
-
-        throw runtime_error("ERROR: Index out of range!");
-    }
-
-// TODO Reset – resets the location that the SeeNext function uses to point at the first item in the list.
-    void Reset() { CurrentNode = nullptr; }
-
+// Reset – resets the location that the SeeNext function uses to point at the first item in the list.
+    void Reset() { currentNode = nullptr; }
 
 /*// TODO operators < > ==
     bool operator<(const LinkedList<T>& other) const{
@@ -153,13 +146,14 @@ public:
     }
 };*/
 
-// TODO operators < > ==
+// operators < > ==
     bool operator<(const LinkedList<T>& other) const{ return getLength() < other.getLength();}
     bool operator==(const LinkedList<T>& other) const{ return getLength() == other.getLength();}
     bool operator>(const LinkedList<T>& other) const{ return getLength() > other.getLength();}
 
+//  print - print the nodes
     void Print() {
-        Node<T>* current = head; // Start with the head of the list
+        auto current = head; // Start with the head of the list
         while (current != nullptr) { // Continue until the end of the list
             cout << current->Data << "->"; // Print the id of the current node
             current = current->next; // Move to the next node

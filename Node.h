@@ -6,13 +6,15 @@
 #define QUANTUMDINGLES_NODE_H
 
 #include <iostream>
+#include <memory>
+
 using namespace std;
 
 template <typename T>
 class Node {
 public:
     T Data;
-    Node* next;
+    shared_ptr<Node<T>> next;
 
     explicit Node(T initialData) : Data(initialData), next(nullptr) {}
 };

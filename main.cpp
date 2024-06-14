@@ -4,8 +4,6 @@
 
 using namespace std;
 
-#include "LinkedList.h"
-
 int main() {
     // Create a new linked list
     LinkedList<int> list;
@@ -31,10 +29,9 @@ int main() {
     cout << "Is 50 in the list? " << (list.IsInList(50) ? "Yes" : "No") << endl;
 
     // Test GetItem method
-    Node<int>* item = list.GetItem(20);
+    auto item = list.GetItem(20);
     if (item) {
         cout << "Got item: " << item->Data << endl;
-        delete item; // Clean up to prevent memory leaks
     } else {
         cout << "Item not found" << endl;
     }
@@ -46,7 +43,7 @@ int main() {
     // Test SeeNext method
     cout << "Using SeeNext: ";
     try {
-        Node<int>* node;
+        shared_ptr<Node<int>> node;
         while ((node = list.SeeNext()) != nullptr) {
             cout << node->Data << " ";
         }
@@ -61,7 +58,7 @@ int main() {
     // Test SeeNext after Reset
     cout << "Using SeeNext after Reset: ";
     try {
-        Node<int>* node;
+        shared_ptr<Node<int>> node;
         while ((node = list.SeeNext()) != nullptr) {
             cout << node->Data << " ";
         }
@@ -72,7 +69,7 @@ int main() {
 
     // Test SeeAt method
     try {
-        Node<int>* itemAt = list.SeeAt(1);
+        auto itemAt = list.SeeAt(1);
         cout << "Item at index 1: " << itemAt->Data << endl;
     } catch (const std::out_of_range& e) {
         cout << e.what() << endl;
@@ -81,7 +78,7 @@ int main() {
     // Test SeeNext after SeeAt
     cout << "Using SeeNext after SeeAt: ";
     try {
-        Node<int>* nextItem = list.SeeNext();
+        auto nextItem = list.SeeNext();
         if (nextItem) {
             cout << "Next item after index 1: " << nextItem->Data << endl;
         }
