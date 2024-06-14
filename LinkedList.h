@@ -36,8 +36,8 @@ public:
     ~LinkedList() = default;
 
 // AddItem – adds an item from the list
-    void AddItem(T data) {
-        auto newNode = make_shared<Node<T>>(data);
+    void AddItem(shared_ptr<T> data) {
+        auto newNode = make_shared<Node<T>>(*data);
         if (head == nullptr) {
             head = newNode;
             tail = newNode;
@@ -49,12 +49,12 @@ public:
     }
 
 // GetItem – searches the list for the given item. If found, it removes it from the list and returns it. If not found, it returns a null pointer.
-    shared_ptr<Node<T>> GetItem(T item){
+    shared_ptr<Node<T>> GetItem(shared_ptr<T> item){
         auto current = head;
         shared_ptr<Node<T>> previous = nullptr;
 
         while (current){
-            if (current->Data == item){
+            if (current->Data == *item){
                 if (previous == nullptr) {
                     head = current->next;
                 }else {
@@ -74,10 +74,10 @@ public:
     }
 
 // IsInlist – returns a bool indicating if the given item is in the list.
-    bool IsInList(T item){
+    bool IsInList(shared_ptr<T> item){
         auto current = head;
         while (current){
-            if (current->Data == item) return true;
+            if (current->Data == *item) return true;
             current = current->next;
         }
         return false;

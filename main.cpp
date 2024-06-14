@@ -8,14 +8,20 @@ int main() {
     // Create a new linked list
     LinkedList<int> list;
 
+    auto item1 = make_shared<int>(10);
+    auto item2 = make_shared<int>(20);
+    auto item3 = make_shared<int>(30);
+    auto item4 = make_shared<int>(40);
+    auto item5 = make_shared<int>(40);
+
     // Test IsEmpty method
     cout << "Is the list empty? " << (list.IsEmpty() ? "Yes" : "No") << endl;
 
     // Add items to the list
-    list.AddItem(10);
-    list.AddItem(20);
-    list.AddItem(30);
-    list.AddItem(40);
+    list.AddItem(item1);
+    list.AddItem(item2);
+    list.AddItem(item3);
+    list.AddItem(item4);
 
     // Print the list
     cout << "List contents after adding items: ";
@@ -25,11 +31,11 @@ int main() {
     cout << "Is the list empty? " << (list.IsEmpty() ? "Yes" : "No") << endl;
 
     // Test IsInList method
-    cout << "Is 20 in the list? " << (list.IsInList(20) ? "Yes" : "No") << endl;
-    cout << "Is 50 in the list? " << (list.IsInList(50) ? "Yes" : "No") << endl;
+    cout << "Is 20 in the list? " << (list.IsInList(item2) ? "Yes" : "No") << endl;
+    cout << "Is 50 in the list? " << (list.IsInList(item5) ? "Yes" : "No") << endl;
 
     // Test GetItem method
-    auto item = list.GetItem(20);
+    auto item = list.GetItem(item2);
     if (item) {
         cout << "Got item: " << item->Data << endl;
     } else {
@@ -88,9 +94,9 @@ int main() {
 
     // Add more items to the list for comparison
     LinkedList<int> otherList;
-    otherList.AddItem(10);
-    otherList.AddItem(20);
-    otherList.AddItem(30);
+    otherList.AddItem(item1);
+    otherList.AddItem(item2);
+    otherList.AddItem(item3);
 
     // Test comparison operators
     cout << "Is the original list < other list? " << (list < otherList ? "Yes" : "No") << endl;
