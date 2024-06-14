@@ -124,7 +124,7 @@ public:
          if (!current) {
              throw out_of_range("Index is out of range!");
          }
-         currentNode = current->next;
+         currentNode = current;
          return current;
      }
 

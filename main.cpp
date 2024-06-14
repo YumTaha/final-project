@@ -12,7 +12,7 @@ int main() {
     auto item2 = make_shared<int>(20);
     auto item3 = make_shared<int>(30);
     auto item4 = make_shared<int>(40);
-    auto item5 = make_shared<int>(40);
+    auto item5 = make_shared<int>(50);
 
     // Test IsEmpty method
     cout << "Is the list empty? " << (list.IsEmpty() ? "Yes" : "No") << endl;
