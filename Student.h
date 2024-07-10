@@ -49,9 +49,6 @@ public:
     bool operator<(const Student& otherStudent) const {return MNumber < otherStudent.MNumber;};
     bool operator==(const Student& otherStudent) const {return MNumber == otherStudent.MNumber;};
 
-
-
-
 };
 
 #endif //QUANTUMDINGLES_STUDENT_H
