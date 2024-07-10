@@ -1,113 +1,103 @@
-#include <iostream>
-#include "Node.h"
 #include "LinkedList.h"
+#include <iostream>
+#include <memory>
 
 using namespace std;
 
-
-// THIS IS TASK 3
-
-
-int main() {
-    // Create a new linked list
-    LinkedList<int> list;
-
-    auto item1 = make_shared<int>(10);
-    auto item2 = make_shared<int>(20);
-    auto item3 = make_shared<int>(30);
-    auto item4 = make_shared<int>(40);
-    auto item5 = make_shared<int>(50);
-
-    // Test IsEmpty method
-    cout << "Is the list empty? " << (list.IsEmpty() ? "Yes" : "No") << endl;
-
-    // Add items to the list
-    list.AddItem(item1);
-    list.AddItem(item2);
-    list.AddItem(item3);
-    list.AddItem(item4);
-
-    // Print the list
-    cout << "List contents after adding items: ";
-    list.Print();
-
-    // Test IsEmpty method again
-    cout << "Is the list empty? " << (list.IsEmpty() ? "Yes" : "No") << endl;
-
-    // Test IsInList method
-    cout << "Is 20 in the list? " << (list.IsInList(item2) ? "Yes" : "No") << endl;
-    cout << "Is 50 in the list? " << (list.IsInList(item5) ? "Yes" : "No") << endl;
-
-    // Test GetItem method
-    auto item = list.GetItem(item2);
-    if (item) {
-        cout << "Got item: " << item->Data << endl;
-    } else {
-        cout << "Item not found" << endl;
-    }
-
-    // Print the list after removing an item
-    cout << "List contents after removing 20: ";
-    list.Print();
-
-    // Test SeeNext method
-    cout << "Using SeeNext: ";
-    try {
-        shared_ptr<Node<int>> node;
-        while ((node = list.SeeNext()) != nullptr) {
-            cout << node->Data << " ";
-        }
-    } catch (const runtime_error& e) {
-        cout << e.what() << endl;
-    }
-    cout << endl;
-
-    // Reset the SeeNext pointer
-    list.Reset();
-
-    // Test SeeNext after Reset
-    cout << "Using SeeNext after Reset: ";
-    try {
-        shared_ptr<Node<int>> node;
-        while ((node = list.SeeNext()) != nullptr) {
-            cout << node->Data << " ";
-        }
-    } catch (const runtime_error& e) {
-        cout << e.what() << endl;
-    }
-    cout << endl;
-
-    // Test SeeAt method
-    try {
-        auto itemAt = list.SeeAt(1);
-        cout << "Item at index 1: " << itemAt->Data << endl;
-    } catch (const std::out_of_range& e) {
-        cout << e.what() << endl;
-    }
-
-    // Test SeeNext after SeeAt
-    cout << "Using SeeNext after SeeAt: ";
-    try {
-        auto nextItem = list.SeeNext();
-        if (nextItem) {
-            cout << "Next item after index 1: " << nextItem->Data << endl;
-        }
-    } catch (const runtime_error& e) {
-        cout << e.what() << endl;
-    }
-
-    // Add more items to the list for comparison
-    LinkedList<int> otherList;
-    otherList.AddItem(item1);
-    otherList.AddItem(item2);
-    otherList.AddItem(item3);
-
-    // Test comparison operators
-    cout << "Is the original list < other list? " << (list < otherList ? "Yes" : "No") << endl;
-    cout << "Is the original list > other list? " << (list > otherList ? "Yes" : "No") << endl;
-    cout << "Is the original list == other list? " << (list == otherList ? "Yes" : "No") << endl;
-
-    return 0;
+void displayMenu() {
+    cout << "\nLinked List Menu\n";
+    cout << "1. Add Item\n";
+    cout << "2. Get Item\n";
+    cout << "3. Check if Item is in List\n";
+    cout << "4. Check if List is Empty\n";
+    cout << "5. See Next Item\n";
+    cout << "6. See Item at Index\n";
+    cout << "7. Reset SeeNext\n";
+    cout << "8. Print List\n";
+    cout << "9. Exit\n";
+    cout << "Enter your choice: ";
 }
 
+int main() {
+    LinkedList<int> list;
+    int choice, data, index;
 
+    while (true) {
+        displayMenu();
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter data to add: ";
+                cin >> data;
+                list.AddItem(make_shared<int>(data));
+                cout << "Item added.\n";
+                break;
+
+            case 2:
+                cout << "Enter data to get: ";
+                cin >> data;
+                {
+                    auto item = list.GetItem(make_shared<int>(data));
+                    if (item) {
+                        cout << "Item " << item->Data << " removed from the list.\n";
+                    } else {
+                        cout << "Item not found in the list.\n";
+                    }
+                }
+                break;
+
+            case 3:
+                cout << "Enter data to check: ";
+                cin >> data;
+                cout << (list.IsInList(make_shared<int>(data)) ? "Item is in the list.\n" : "Item is not in the list.\n");
+                break;
+
+            case 4:
+                cout << (list.IsEmpty() ? "List is empty.\n" : "List is not empty.\n");
+                break;
+
+            case 5:
+            {
+                auto item = list.SeeNext();
+                if (item) {
+                    cout << "Next item: " << item->Data << "\n";
+                } else {
+                    cout << "No more items in the list or list is empty.\n";
+                }
+            }
+                break;
+
+            case 6:
+                cout << "Enter index to see: ";
+                cin >> index;
+                try {
+                    auto item = list.SeeAt(index);
+                    cout << "Item at index " << index << ": " << item->Data << "\n";
+                } catch (const out_of_range& e) {
+                    cout << e.what() << endl;
+                }
+                break;
+
+            case 7:
+                list.Reset();
+                cout << "SeeNext reset.\n";
+                break;
+
+            case 8:
+                list.Print();
+                break;
+
+            case 9:
+                system("pause");
+                return 0;
+
+            default:
+                cout << "Invalid choice. Please try again.\n";
+                break;
+        }
+    }
+
+    system("pause");
+    return 0;
+}
