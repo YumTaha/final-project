@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <limits>
 #include "LinkedList.h"
 #include "Student.h"
 
@@ -43,6 +44,13 @@ int main() {
     while (true) {
         displayMenu();
         cin >> choice;
+
+        if(cin.fail()) { // Check if input extraction failed
+            cin.clear(); // Clear error state
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); // Ignore rest of the line
+            cout << "Invalid input. Please enter a number.\n";
+            continue; // Skip the rest of the loop and display the menu again
+        }
 
         switch (choice) {
             case 1: {
@@ -94,8 +102,6 @@ int main() {
                 auto item = list.SeeNext();
                 if (item) {
                     cout << "Next item: " << item->Data.GetName() << "\n";
-                } else {
-                    cout << "No more items in the list or list is empty.\n";
                 }
                 break;
             }

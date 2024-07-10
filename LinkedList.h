@@ -1,3 +1,10 @@
+//
+// Created by Taha on 6/13/2024.
+//
+
+#ifndef QUANTUMDINGLES_LINKEDLIST_H
+#define QUANTUMDINGLES_LINKEDLIST_H
+
 #include <iostream>
 #include <memory>
 #include "Node.h"
@@ -121,3 +128,5 @@ public:
         cout << "null" << endl;
     }
 };
+
+#endif //QUANTUMDINGLES_LINKEDLIST_H
