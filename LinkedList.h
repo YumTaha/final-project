@@ -15,6 +15,7 @@ class LinkedList{
 private:
     Node<T>* head;
     Node<T>* tail;
+    Node<T>* CurrentNode;
 
     [[nodiscard]] int getLength() const {
         int length = 0;
@@ -28,7 +29,7 @@ private:
 
 public:
 // TODO Constructor
-    LinkedList(): head(nullptr), tail (nullptr){}
+    LinkedList(): head(nullptr), tail(nullptr), CurrentNode(nullptr){}
 
 // TODO Destructor
     virtual ~LinkedList(){
@@ -40,7 +41,8 @@ public:
     }
 
 // TODO AddItem – adds an item from the list
-    void AddItem(Node<T>* newNode) {
+    void AddItem(T data) {
+        auto* newNode = new Node<T>(data);
         if (head == nullptr) {
             head = newNode;
             tail = newNode;
@@ -94,6 +96,19 @@ public:
   * in between the 2 calls (or the first call returns the last item in the list).*/
 // TODO Reset – resets the location that the SeeNext function uses to point at the first item in the list.
 
+    Node<T>* SeeNext() {
+        if (head == nullptr) {
+            throw runtime_error("ERROR: List is empty!");
+        }else if (CurrentNode == nullptr) {
+            CurrentNode = head;
+        }else { CurrentNode = CurrentNode->next; }
+
+        if (CurrentNode == nullptr) {
+            cout << " End of the list reached!" << endl;
+            return nullptr;
+        }
+        return CurrentNode;
+    }
 
 
 /*// TODO operators < > ==
