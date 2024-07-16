@@ -15,8 +15,9 @@ void displayMenu() {
     cout << "5. See Next Item\n";
     cout << "6. See Item at Index\n";
     cout << "7. Reset SeeNext\n";
-    cout << "8. Print List\n";
-    cout << "9. Exit\n";
+    // cout << "8. Print List\n"; Tester to print list of students
+    cout << "9. Display List\n";
+    cout << "10. Exit\n";
     cout << "Enter your choice: ";
 }
 
@@ -55,7 +56,7 @@ int main() {
         switch (choice) {
             case 1: {
                 string firstName, lastName, mNumber;
-                tm birthday;
+                tm birthday{};
                 double gpa;
 
                 cout << "Enter first name: ";
@@ -125,6 +126,9 @@ int main() {
                 list.Print();
                 break;
             case 9:
+                list.DisplayList();
+                break;
+            case 10:
                 return 0;
             default:
                 cout << "Invalid choice. Please try again.\n";

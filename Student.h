@@ -9,6 +9,7 @@
 #include <sstream>
 #include <ctime>
 #include <utility>
+#include <iostream>
 
 using namespace std;
 
@@ -24,31 +25,37 @@ public:
     Student(string  FirstName, string  LastName, string  MNumber, tm Birthday, double GPA = 0.0) :
             FirstName(std::move(FirstName)), LastName(std::move(LastName)), MNumber(std::move(MNumber)), Birthday(Birthday), GPA(GPA) {}
 
-    string GetName() {return FirstName + " " + LastName;};
-    string GetMNumber() {return MNumber;};
+    [[nodiscard]] string GetName() const { return FirstName + " " + LastName; }
+    string GetMNumber() { return MNumber; }
+    [[nodiscard]] double GetGPA() const { return GPA; }
 
     [[nodiscard]] int GetAge() const {
         time_t now = time(nullptr);
         tm* currentTime = gmtime(&now);
 
-        int currentMonth = currentTime -> tm_mon;
-        int currentDay = currentTime -> tm_mday;
-        int currentYear = currentTime -> tm_year + 1900;
+        int currentMonth = currentTime->tm_mon;
+        int currentDay = currentTime->tm_mday;
+        int currentYear = currentTime->tm_year + 1900;
 
         int month = Birthday.tm_mon;
         int day = Birthday.tm_mday;
         int year = Birthday.tm_year;
 
         int age = currentYear - year;
-        if ((currentMonth < month) || currentMonth == month && currentDay < day) {age--;}
+        if ((currentMonth < month) || (currentMonth == month && currentDay < day)) {
+            age--;
+        }
 
         return age;
     }
 
-    bool operator>(const Student& otherStudent) const {return MNumber > otherStudent.MNumber;};
-    bool operator<(const Student& otherStudent) const {return MNumber < otherStudent.MNumber;};
-    bool operator==(const Student& otherStudent) const {return MNumber == otherStudent.MNumber;};
+    bool operator>(const Student& otherStudent) const { return MNumber > otherStudent.MNumber; }
+    bool operator<(const Student& otherStudent) const { return MNumber < otherStudent.MNumber; }
+    bool operator==(const Student& otherStudent) const { return MNumber == otherStudent.MNumber; }
 
+    void Display() const {
+        cout << "Name: " << GetName() << ", MNumber: " << MNumber << ", GPA: " << GPA << endl;
+    }
 };
 
 #endif //QUANTUMDINGLES_STUDENT_H

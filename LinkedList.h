@@ -127,6 +127,14 @@ public:
         }
         cout << "null" << endl;
     }
+
+    void DisplayList() const {
+        auto current = head;
+        while (current) {
+            current->Data.Display();
+            current = current->next;
+        }
+    }
 };
 
 #endif //QUANTUMDINGLES_LINKEDLIST_H
