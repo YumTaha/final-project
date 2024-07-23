@@ -35,7 +35,7 @@ public:
 
         int currentMonth = currentTime->tm_mon;
         int currentDay = currentTime->tm_mday;
-        int currentYear = currentTime->tm_year + 1900;
+        int currentYear = currentTime->tm_year;
 
         int month = Birthday.tm_mon;
         int day = Birthday.tm_mday;
@@ -53,8 +53,13 @@ public:
     bool operator<(const Student& otherStudent) const { return MNumber < otherStudent.MNumber; }
     bool operator==(const Student& otherStudent) const { return MNumber == otherStudent.MNumber; }
 
+
     void Display() const {
-        cout << "Name: " << GetName() << ", MNumber: " << MNumber << ", GPA: " << GPA << endl;
+        cout << "+--------------------------+" << endl;
+        cout << "| Name: " << GetName() << endl;
+        cout << "| MNumber: " << MNumber << endl;
+        cout << "| GPA: " << GPA << endl;
+        cout << "+--------------------------+" << endl;
     }
 };
 

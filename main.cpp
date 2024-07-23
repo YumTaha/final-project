@@ -6,7 +6,19 @@
 
 using namespace std;
 
-void displayMenu() {
+void WelcomeMenu(const string& welcomeText) {
+    int width = welcomeText.length() + 2; // Adding 4 for padding and borders
+    cout << "+";
+    for (int i = 0; i < width; ++i) cout << "-";
+    cout << "+" << endl;
+    cout << "| " << welcomeText << " |" << endl;
+    cout << "+";
+    for (int i = 0; i < width; ++i) cout << "-";
+    cout << "+" << endl;
+}
+
+void displayMenu(){
+
     cout << "\nLinked List Menu\n";
     cout << "1. Add Item\n";
     cout << "2. Get Item\n";
@@ -15,8 +27,8 @@ void displayMenu() {
     cout << "5. See Next Item\n";
     cout << "6. See Item at Index\n";
     cout << "7. Reset SeeNext\n";
-    // cout << "8. Print List\n"; Tester to print list of students
-    cout << "9. Display List\n";
+    cout << "8. Display List\n";
+    cout << "9. Get Age of Student\n";
     cout << "10. Exit\n";
     cout << "Enter your choice: ";
 }
@@ -42,15 +54,17 @@ int main() {
     LinkedList<Student> list;
     int choice;
 
+    WelcomeMenu("WELCOME");
+
     while (true) {
         displayMenu();
         cin >> choice;
 
-        if(cin.fail()) { // Check if input extraction failed
-            cin.clear(); // Clear error state
-            cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); // Ignore rest of the line
+        if(cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
             cout << "Invalid input. Please enter a number.\n";
-            continue; // Skip the rest of the loop and display the menu again
+            continue;
         }
 
         switch (choice) {
@@ -123,11 +137,21 @@ int main() {
                 cout << "SeeNext reset.\n";
                 break;
             case 8:
-                list.Print();
-                break;
-            case 9:
                 list.DisplayList();
                 break;
+            case 9: {
+                string mNumber;
+                cout << "Enter MNumber to get age: ";
+                cin >> mNumber;
+                Student dummyStudent("", "", mNumber, {}, 0.0);
+                auto item = list.GetItem(dummyStudent);
+                if (item) {
+                    cout << "Age of student " << item->Data.GetName() << ": " << item->Data.GetAge() << " years\n";
+                } else {
+                    cout << "Student not found in the list.\n";
+                }
+                break;
+            }
             case 10:
                 return 0;
             default:

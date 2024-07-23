@@ -119,14 +119,6 @@ public:
         return length;
     }
 
-    void Print() const {
-        shared_ptr<Node<T>> current = head;
-        while (current) {
-            cout << current->Data.GetName() << " (" << current->Data.GetMNumber() << ") -> ";
-            current = current->next;
-        }
-        cout << "null" << endl;
-    }
 
     void DisplayList() const {
         auto current = head;
