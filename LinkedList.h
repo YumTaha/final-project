@@ -82,7 +82,7 @@ public:
         }
 
         if (CurrentNode == nullptr) {
-            cout << "ERROR: End of the list reached!" << endl;
+            cout << "End of the list reached!" << endl;
             return nullptr;
         }
 

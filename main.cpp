@@ -144,9 +144,18 @@ int main() {
                 cout << "Enter MNumber to get age: ";
                 cin >> mNumber;
                 Student dummyStudent("", "", mNumber, {}, 0.0);
-                auto item = list.GetItem(dummyStudent);
-                if (item) {
-                    cout << "Age of student " << item->Data.GetName() << ": " << item->Data.GetAge() << " years\n";
+                if (list.IsInList(dummyStudent)) {
+                    for (int i = 0; ; ++i) {
+                        try {
+                            auto item = list.SeeAt(i);
+                            if (item->Data.GetMNumber() == mNumber) {
+                                cout << "Age of student " << item->Data.GetName() << ": " << item->Data.GetAge() << " years\n";
+                                break;
+                            }
+                        } catch (const out_of_range& e) {
+                            break;
+                        }
+                    }
                 } else {
                     cout << "Student not found in the list.\n";
                 }
