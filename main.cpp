@@ -29,7 +29,8 @@ void displayMenu(){
     cout << "7. Reset SeeNext\n";
     cout << "8. Display List\n";
     cout << "9. Get Age of Student\n";
-    cout << "10. Exit\n";
+    cout << "10. Get GPA of Student\n";
+    cout << "11. Exit\n";
     cout << "Enter your choice: ";
 }
 
@@ -161,7 +162,30 @@ int main() {
                 }
                 break;
             }
-            case 10:
+            case 10: {
+                string mNumber;
+                cout << "Enter MNumber to get GPA: ";
+                cin >> mNumber;
+                Student dummyStudent("", "", mNumber, {}, 0.0);
+                if (list.IsInList(dummyStudent)) {
+                    for (int i = 0;; ++i) {
+                        try {
+                            auto item = list.SeeAt(i);
+                            if (item->Data.GetMNumber() == mNumber) {
+                                cout << "GPA of student " << item->Data.GetName() << ": " << item->Data.GetGPA()
+                                     << endl;
+                                break;
+                            }
+                        } catch (const out_of_range &e) {
+                            break;
+                        }
+                    }
+                } else {
+                    cout << "Student not found in the list.\n";
+                }
+                break;
+            }
+            case 11:
                 return 0;
             default:
                 cout << "Invalid choice. Please try again.\n";
